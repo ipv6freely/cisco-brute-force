@@ -7,6 +7,7 @@ import pyping
 import argparse
 import os
 import paramiko
+from netmiko import NetMikoTimeoutException
 
 
 # from paramiko.ssh_exception import SSHException
