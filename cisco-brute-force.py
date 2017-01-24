@@ -25,8 +25,9 @@ def processargs():
     parser.add_argument('-i','--input', help='Input file of hosts to brute force',required=True)
     parser.add_argument('-p','--passwordlist', help='Input file of passwords to try',required=True)
     parser.add_argument('-u','--username', help='Username for login attempts',required=True)
+    parser.add_argument('-f','--failures', help='Print Auth/Timeout Failures',required=False,action='store_true')
     args = parser.parse_args()
-    return args.input, args.passwordlist, args.username
+    return args.input, args.passwordlist, args.username, args.failures
 
 def grabhosts(inputfile):
     try:
@@ -53,15 +54,15 @@ def pinghost(host):
     result = pyping.ping(host.strip())
     return result.ret_code # 0 = pings, 1 = no ping
 
-def hostconnect(host,username,password):
+def hostconnect(host,username,password,failures):
     try: #attempt to SSH
         net_connect = ConnectHandler(device_type="cisco_ios_ssh", ip=host, username=username, password=password)
         return password
     except NetMikoTimeoutException as err:
-        print("T",end="")
+        print("T",end="") if failures
         return
     except NetMikoAuthenticationException as err:
-        print(".",end="")
+        print("A",end="") if failures
         return
     except:
         return
@@ -75,12 +76,14 @@ def main():
 
     paramiko.util.log_to_file("cisco-brute-force.log")
 
-    inputfile, passwordfile, username = processargs()
+    inputfile, passwordfile, username, failures = processargs()
 
     hostlist = grabhosts(inputfile)
     passwordlist = grabpasswords(passwordfile)
 
     pingfail = 0
+
+    print("FAILURE MARKS: ON\nT: Connection Timed-Out\nA: Authentication Failed") if failures == True
 
     print("\n","="*75,"\n",end="",sep="")
 
@@ -90,7 +93,7 @@ def main():
             print("OK! Logging in: ",end="",sep="")
             passwordfound = False
             for password in passwordlist:
-                result = hostconnect(host,username,password)
+                result = hostconnect(host,username,password,failures)
                 if result:
                     passwordfound = True
                     break
