@@ -59,10 +59,10 @@ def hostconnect(host,username,password,failures):
         net_connect = ConnectHandler(device_type="cisco_ios_ssh", ip=host, username=username, password=password)
         return password
     except NetMikoTimeoutException as err:
-        print("T",end="") if failures is True
+        print("T",end="") if failures
         return
     except NetMikoAuthenticationException as err:
-        print("A",end="") if failures is True
+        print("A",end="") if failures
         return
     except:
         return
@@ -77,6 +77,8 @@ def main():
     paramiko.util.log_to_file("cisco-brute-force.log")
 
     inputfile, passwordfile, username, failures = processargs()
+
+    print(failures)
 
     hostlist = grabhosts(inputfile)
     passwordlist = grabpasswords(passwordfile)
