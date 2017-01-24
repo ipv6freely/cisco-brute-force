@@ -85,7 +85,7 @@ def main():
     print("\n","="*75,"\n",end="",sep="")
 
     for host in hostlist:
-        print ("\nPinging ",host,"... ",end="")
+        print ("\nPinging",host,"... ",end="")
         if pinghost(host) == 0:
             print("OK! Logging in... ",end="")
             passwordfound = False
