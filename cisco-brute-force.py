@@ -85,9 +85,9 @@ def main():
     print("\n","="*75,"\n",end="",sep="")
 
     for host in hostlist:
-        print ("\nPinging",host,"... ",end="")
+        print ("\nPinging ",host,": ",end="",sep="")
         if pinghost(host) == 0:
-            print("OK! Logging in... ",end="")
+            print("OK! Logging in: ",end="",sep="")
             passwordfound = False
             for password in passwordlist:
                 result = hostconnect(host,username,password)
@@ -97,9 +97,9 @@ def main():
             if passwordfound:
                 print("SUCCESS! Password is:",result,end="")
             else:
-                print("NO PASS!",end="")
+                print("NO PASSWORD!",end="")
         else:
-            print("NOPE. Skipping...")
+            print("FAILED. Skipping...")
             pingfail = pingfail + 1
             continue
     print(pingfail,"Hosts didn't ping.")
