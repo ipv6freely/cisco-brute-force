@@ -99,7 +99,7 @@ def main():
             timeout = False
             for password in passwordlist:
                 result = hostconnect(host,username,password,failures)
-                if result is "timeout":
+                if result == "timeout":
                     timeout = True
                     break
                 elif result:
