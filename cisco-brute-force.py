@@ -106,11 +106,11 @@ def main():
                     goodpassword = result
                     break
             if goodpassword:
-                print(" SUCCESS! Password is:",goodpassword,end="")
+                print("SUCCESS! Password is:",goodpassword,end="")
             elif timeout:
-                print(" SSH TIMEOUT! Skipping...",end="")
+                print("SSH TIMEOUT! Skipping...",end="")
             else:
-                print(" NO PASSWORD!",end="")
+                print("NO PASSWORD!",end="")
         else:
             print("FAILED. Skipping...")
             pingfail = pingfail + 1
