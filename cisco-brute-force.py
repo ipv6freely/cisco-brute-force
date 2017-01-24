@@ -61,7 +61,8 @@ def hostconnect(host,username,password,failures):
     except NetMikoTimeoutException as err:
         if failures:
             print("T",end="")
-        return
+        timeout = "timeout"
+        return timeout
     except NetMikoAuthenticationException as err:
         if failures:
             print("A",end="")
@@ -97,12 +98,17 @@ def main():
             passwordfound = False
             for password in passwordlist:
                 result = hostconnect(host,username,password,failures)
-                if result:
+                if result is "timeout":
+                    timeout = True
+                    break
+                elif result:
                     passwordfound = True
                     goodpassword = result
                     break
             if passwordfound:
                 print(" SUCCESS! Password is:",goodpassword,end="")
+            elif timeout:
+                print(" SSH TIMEOUT! Skipping...")
             else:
                 print(" NO PASSWORD!",end="")
         else:
