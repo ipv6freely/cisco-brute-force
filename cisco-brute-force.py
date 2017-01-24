@@ -99,11 +99,12 @@ def main():
                 result = hostconnect(host,username,password,failures)
                 if result:
                     passwordfound = True
+                    goodpassword = result
                     break
             if passwordfound:
-                print("SUCCESS! Password is:",result,end="")
+                print(" SUCCESS! Password is:",goodpassword,end="")
             else:
-                print("NO PASSWORD!",end="")
+                print(" NO PASSWORD!",end="")
         else:
             print("FAILED. Skipping...")
             pingfail = pingfail + 1
