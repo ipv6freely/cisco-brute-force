@@ -56,14 +56,15 @@ def pinghost(host):
 
 def hostconnect(host,username,password,failures):
     try: #attempt to SSH
-        print(failures)
         net_connect = ConnectHandler(device_type="cisco_ios_ssh", ip=host, username=username, password=password)
         return password
     except NetMikoTimeoutException as err:
-        #print("T",end="") if failures
+        if failures:
+            print("T",end="")
         return
     except NetMikoAuthenticationException as err:
-        #print("A",end="") if failures
+        if failures:
+            print("A",end="")
         return
     except:
         return
@@ -79,14 +80,13 @@ def main():
 
     inputfile, passwordfile, username, failures = processargs()
 
-    print(failures)
-
     hostlist = grabhosts(inputfile)
     passwordlist = grabpasswords(passwordfile)
 
     pingfail = 0
 
-    #print("FAILURE MARKS: ON\nT: Connection Timed-Out\nA: Authentication Failed") if failures == True
+    if failures:
+        print("FAILURE MARKS: ON\nT: Connection Timed-Out\nA: Authentication Failed")
 
     print("\n","="*75,"\n",end="",sep="")
 
