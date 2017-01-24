@@ -7,21 +7,7 @@ import pyping
 import argparse
 import os
 import paramiko
-from netmiko import NetMikoTimeoutException
-
-
-# from paramiko.ssh_exception import SSHException
-# from paramiko.ssh_exception import AuthenticationException
-
-
-# class NetMikoTimeoutException(SSHException):
-#     """SSH session timed trying to connect to the device."""
-#     pass
-
-
-# class NetMikoAuthenticationException(AuthenticationException):
-#     """SSH authentication exception based on Paramiko AuthenticationException."""
-#     pass
+from netmiko import NetMikoTimeoutException, NetMikoAuthenticationException
 
 os.system('cls' if os.name == 'nt' else 'clear')
 print('''
@@ -70,7 +56,14 @@ def pinghost(host):
 def hostconnect(host,username,password):
     try: #attempt to SSH
         net_connect = ConnectHandler(device_type="cisco_ios_ssh", ip=host, username=username, password=password)
+        return password
     except NetMikoTimeoutException as err:
+        print("T")
+        return
+    except NetMikoAuthenticationException as err:
+        print(".")
+        return
+    except:
         return
 
 def main():
