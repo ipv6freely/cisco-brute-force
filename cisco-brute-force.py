@@ -102,10 +102,9 @@ def main():
                     timeout = True
                     break
                 elif result:
-                    passwordfound = True
                     goodpassword = result
                     break
-            if passwordfound:
+            if goodpassword:
                 print(" SUCCESS! Password is:",goodpassword,end="")
             elif timeout:
                 print(" SSH TIMEOUT! Skipping...")
