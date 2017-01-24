@@ -86,7 +86,7 @@ def main():
     pingfail = 0
 
     if failures:
-        print("FAILURE MARKS: ON\nT: Connection Timed-Out\nA: Authentication Failed")
+        print("\nFAILURE MARKS: ON\nT = Connection Timed-Out\nA = Authentication Failed")
 
     print("\n","="*75,"\n",end="",sep="")
 
