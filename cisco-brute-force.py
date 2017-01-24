@@ -108,7 +108,7 @@ def main():
             if goodpassword:
                 print(" SUCCESS! Password is:",goodpassword,end="")
             elif timeout:
-                print(" SSH TIMEOUT! Skipping...")
+                print(" SSH TIMEOUT! Skipping...",end="")
             else:
                 print(" NO PASSWORD!",end="")
         else:
