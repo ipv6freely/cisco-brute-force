@@ -95,7 +95,7 @@ def main():
         print ("\nPinging ",host,": ",end="",sep="")
         if pinghost(host) == 0:
             print("OK! Logging in: ",end="",sep="")
-            passwordfound = False
+            goodpassword = ""
             for password in passwordlist:
                 result = hostconnect(host,username,password,failures)
                 if result is "timeout":
