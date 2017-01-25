@@ -115,7 +115,7 @@ def main():
             print("FAILED. Skipping...")
             pingfail = pingfail + 1
             continue
-    print("\n",pingfail,"Hosts didn't ping.")
+    print("\n\n",pingfail,"Hosts didn't ping.")
 
 if __name__ == '__main__':
     try:
