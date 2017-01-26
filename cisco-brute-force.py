@@ -55,7 +55,7 @@ def pinghost(host):
     result = pyping.ping(host.strip())
     return result.ret_code # 0 = pings, 1 = no ping
 
-def hostconnect(host,username,password,failures,enable):
+def hostconnect(host,username,password,failures):
     try: #attempt to SSH
         net_connect = ConnectHandler(device_type="cisco_ios_ssh", ip=host, username=username, password=password, global_delay_factor=30)
         return password
@@ -70,6 +70,14 @@ def hostconnect(host,username,password,failures,enable):
         return
     except:
         return
+
+def hostenable(host,username,password,enablepassword):
+    try: #attempt to SSH
+        net_connect = ConnectHandler(device_type="cisco_ios_ssh", ip=host, username=username, password=password, global_delay_factor=30)
+        return enablepassword
+    except:
+        error = "error"
+        return error
 
 def main():
 
@@ -99,7 +107,7 @@ def main():
             goodpassword = ""
             timeout = False
             for password in passwordlist:
-                result = hostconnect(host,username,password,failures,enable)
+                result = hostconnect(host,username,password,failures)
                 if result == "timeout":
                     timeout = True
                     break
@@ -108,6 +116,18 @@ def main():
                     break
             if goodpassword:
                 print("SUCCESS! Password is:",goodpassword,end="")
+                if enable is True:
+                    for enablepassword in passwordlist:
+                        result = hostenable(host,username,goodpassword,enablepassword)
+                        if result == "error":
+                            break
+                        else:
+                            goodenablepassword = result
+                            break
+                    if goodenablepassword:
+                        print("Enable password is:",goodenablepassword,end="")
+                    else:
+                        print("Can't Enable!",end="")
             elif timeout:
                 print("SSH TIMEOUT! Skipping...",end="")
             else:
