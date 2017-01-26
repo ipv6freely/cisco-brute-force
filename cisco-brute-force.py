@@ -118,7 +118,7 @@ def main():
                     break
             if goodpassword:
                 print("SUCCESS! Password is:",goodpassword,end="")
-                if enable is True:
+                if enable:
                     for enablepassword in passwordlist:
                         result = hostenable(host,username,goodpassword,enablepassword)
                         if result == "error":
