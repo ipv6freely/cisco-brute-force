@@ -80,7 +80,7 @@ def main():
 
     paramiko.util.log_to_file("cisco-brute-force.log")
 
-    inputfile, passwordfile, username, failures = processargs()
+    inputfile, passwordfile, username, failures, enable = processargs()
 
     hostlist = filter(None,grabhosts(inputfile))
     passwordlist = grabpasswords(passwordfile)
