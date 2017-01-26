@@ -107,6 +107,7 @@ def main():
         if pinghost(host) == 0:
             print("OK! Logging in: ",end="",sep="")
             goodpassword = ""
+            goodenablepassword = ""
             timeout = False
             for password in passwordlist:
                 result = hostconnect(host,username,password,failures)
