@@ -26,8 +26,9 @@ def processargs():
     parser.add_argument('-p','--passwordlist', help='Input file of passwords to try',required=True)
     parser.add_argument('-u','--username', help='Username for login attempts',required=True)
     parser.add_argument('-f','--failures', help='Print Auth/Timeout Failures',required=False,action='store_true')
+    parser.add_argument('-e','--enable', help='Find Enable Passwords',required=False,action='store_true')
     args = parser.parse_args()
-    return args.input, args.passwordlist, args.username, args.failures
+    return args.input, args.passwordlist, args.username, args.failures, args.enable
 
 def grabhosts(inputfile):
     try:
@@ -91,14 +92,14 @@ def main():
 
     print("\n","="*75,"\n",end="",sep="")
 
-    for host in hostlist:
+    host for host in hostlist if host:
         print ("\nPinging ",host,": ",end="",sep="")
         if pinghost(host) == 0:
             print("OK! Logging in: ",end="",sep="")
             goodpassword = ""
             timeout = False
             for password in passwordlist:
-                result = hostconnect(host,username,password,failures)
+                result = hostconnect(host,username,password,failures,enable)
                 if result == "timeout":
                     timeout = True
                     break
