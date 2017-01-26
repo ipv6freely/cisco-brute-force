@@ -82,7 +82,7 @@ def main():
 
     inputfile, passwordfile, username, failures = processargs()
 
-    hostlist = grabhosts(inputfile)
+    hostlist = filter(None,grabhosts(inputfile))
     passwordlist = grabpasswords(passwordfile)
 
     pingfail = 0
@@ -92,7 +92,7 @@ def main():
 
     print("\n","="*75,"\n",end="",sep="")
 
-    host for host in hostlist if host:
+    for host in hostlist:
         print ("\nPinging ",host,": ",end="",sep="")
         if pinghost(host) == 0:
             print("OK! Logging in: ",end="",sep="")
