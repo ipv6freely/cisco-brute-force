@@ -55,7 +55,7 @@ def pinghost(host):
     result = pyping.ping(host.strip())
     return result.ret_code # 0 = pings, 1 = no ping
 
-def hostconnect(host,username,password,failures):
+def hostconnect(host,username,password,failures,enable):
     try: #attempt to SSH
         net_connect = ConnectHandler(device_type="cisco_ios_ssh", ip=host, username=username, password=password, global_delay_factor=30)
         return password
