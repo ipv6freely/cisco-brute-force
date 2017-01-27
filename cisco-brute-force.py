@@ -27,8 +27,9 @@ def processargs():
     parser.add_argument('-u','--username', help='Username for login attempts',required=True)
     parser.add_argument('-f','--failures', help='Print Auth/Timeout Failures',required=False,action='store_true')
     parser.add_argument('-e','--enable', help='Find Enable Passwords',required=False,action='store_true')
+    parser.add_argument('-t','--telnet', help='Use Telnet instead of SSH',required=False,action='store_true')
     args = parser.parse_args()
-    return args.input, args.passwordlist, args.username, args.failures, args.enable
+    return args.input, args.passwordlist, args.username, args.failures, args.enable, args.telnet
 
 def grabhosts(inputfile):
     try:
@@ -55,9 +56,9 @@ def pinghost(host):
     result = pyping.ping(host.strip())
     return result.ret_code # 0 = pings, 1 = no ping
 
-def hostconnect(host,username,password,failures):
+def hostconnect(host,username,password,failures,device_type):
     try: #attempt to SSH
-        net_connect = ConnectHandler(device_type="cisco_ios_ssh", ip=host, username=username, password=password, global_delay_factor=30)
+        net_connect = ConnectHandler(device_type=device_type, ip=host, username=username, password=password, global_delay_factor=30)
         return password
     except NetMikoTimeoutException as err:
         if failures:
@@ -71,9 +72,9 @@ def hostconnect(host,username,password,failures):
     except:
         return
 
-def hostenable(host,username,password,enablepassword):
+def hostenable(host,username,password,enablepassword,device_type):
     try: #attempt to SSH
-        net_connect = ConnectHandler(device_type="cisco_ios_ssh", ip=host, username=username, password=password, global_delay_factor=30)
+        net_connect = ConnectHandler(device_type=device_type, ip=host, username=username, password=password, global_delay_factor=30)
         net_connect.secret = enablepassword
         net_connect.enable()
         return enablepassword
@@ -90,7 +91,12 @@ def main():
 
     paramiko.util.log_to_file("cisco-brute-force.log")
 
-    inputfile, passwordfile, username, failures, enable = processargs()
+    inputfile, passwordfile, username, failures, enable, telnet = processargs()
+
+    if telnet:
+        device_type = "cisco_ios_telnet"
+    else:
+        device_type = "cisco_ios_ssh"
 
     hostlist = filter(None,grabhosts(inputfile))
     passwordlist = grabpasswords(passwordfile)
@@ -110,7 +116,7 @@ def main():
             goodenablepassword = ""
             timeout = False
             for password in passwordlist:
-                result = hostconnect(host,username,password,failures)
+                result = hostconnect(host,username,password,failures,device_type)
                 if result == "timeout":
                     timeout = True
                     break
@@ -121,7 +127,7 @@ def main():
                 print("SUCCESS! Password is:",goodpassword,end="")
                 if enable:
                     for enablepassword in passwordlist:
-                        result = hostenable(host,username,goodpassword,enablepassword)
+                        result = hostenable(host,username,goodpassword,enablepassword,device_type)
                         if result == "error":
                             break
                         else:
