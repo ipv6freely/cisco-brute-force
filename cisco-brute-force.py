@@ -128,15 +128,15 @@ def main():
                             goodenablepassword = result
                             break
                     if goodenablepassword:
-                        print("Enable password is:",goodenablepassword,end="")
+                        print(" Enable password is:",goodenablepassword,end="")
                     else:
-                        print("Can't Enable!",end="")
+                        print(" Can't Enable!",end="")
             elif timeout:
                 print("SSH TIMEOUT! Skipping...",end="")
             else:
                 print("NO PASSWORD!",end="")
         else:
-            print("FAILED. Skipping...")
+            print("FAILED. Skipping...",end="")
             pingfail = pingfail + 1
             continue
     print("\n\n",pingfail,"Hosts didn't ping.")
