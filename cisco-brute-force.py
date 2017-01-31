@@ -58,7 +58,7 @@ def pinghost(host):
 
 def hostconnect(host,username,password,failures,device_type):
     try: #attempt to SSH
-        net_connect = ConnectHandler(device_type=device_type, ip=host, username=username, password=password, global_delay_factor=5)
+        net_connect = ConnectHandler(device_type=device_type, ip=host, username=username, password=password, global_delay_factor=1)
         return password
     except NetMikoTimeoutException as err:
         if failures:
